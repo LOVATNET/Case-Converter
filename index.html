@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body {
+            width: 90%;
+            height: 90vh;
+            margin: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+        textarea {
+            width: 90vw;
+            height: 60vh;
+            margin: 20px;
+        }
+        .title {
+            color: #343a40;
+            font-size: 44px;
+            font-weight: bold;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        .btn-container {
+            display: flex;
+            flex-flow: row wrap;
+        }
+        .btn {
+            background-color: #F6AE99;
+            padding: 10px 16px;
+            margin: 20px;
+            color: #716F81;
+            font-weight: bold;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 18px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #F2E1C1;
+        }
+    </style>
+</head>
+<body>
+    <label>Filename</label>
+    <input type="text" id="filename" value="text.txt"/>
+
+    <br/><br/><br/>
+
+    <div class="title">Case Converter</div>
+
+    <label for = "textar"> Enter text here: </label> <br/>
+    <textarea id = "textar"></textarea> <br/>
+
+    <div class="btn-container">
+        <button id="upper-case" class="btn"> Upper Case </button>
+        <button id="lower-case" class="btn"> Lower Case </button>
+        <button id="proper-case" class="btn"> Proper Case </button>
+        <button id="sentence-case" class="btn"> Sentence Case </button>
+        <button id="save-text-file" class="btn"> Save text file </button>
+    </div>
+
+    <script>
+        let text = document.getElementById("textar");
+
+        document.getElementById("upper-case").addEventListener("click", function () {
+            text.value = text.value.toUpperCase();
+        })
+
+        document.getElementById("lower-case").addEventListener("click", function () {
+            text.value = text.value.toLowerCase();
+        })
+
+        document.getElementById("proper-case").addEventListener("click", function () {
+            let textArr = text.value.split(" ");
+            text.value = "";
+            for (i = 0; i < textArr.length; i++) {
+                text.value += textArr[i].charAt(0).toUpperCase() + textArr[i].slice(1) + " ";
+            }
+            text.value = text.value.slice(0, -1);
+        })
+
+        document.getElementById("sentence-case").addEventListener("click", function () {
+            text.value = text.value.toLowerCase().replace(/(^\w|\.\s\w)/g, s => s.toUpperCase());
+        })
+
+        function download(filename, text) {
+            let element = document.createElement('a');
+            element.style.display = 'none';
+
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+
+            element.setAttribute('download', filename);
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
+
+        document.getElementById("save-text-file").addEventListener("click", function(){
+
+            let text = document.getElementById("textar").value;
+            let filename = document.getElementById("filename").value;
+
+            download(filename, text);
+        }, false);
+    </script>
+</body>
+</html>
+
+
